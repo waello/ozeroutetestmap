@@ -152,13 +152,20 @@ function initMap(): void {
     return gt['results'][0].formatted_address;
   }
   function sd() {
+    let address = '';
     geocodePosition(marker.getPosition()).then((employee) =>
       infowindow.setContent(employee)
     );
+    geocodePosition(marker.getPosition()).then(
+      (employee) => (document.getElementById('adddress').innerHTML = employee)
+    );
     infowindow.open(map, marker);
+
+    document.getElementById('Latitude').innerHTML = marker.position.lat();
+    document.getElementById('longitude').innerHTML = marker.position.lng();
   }
 
-  marker.addListener('click', sd);
+  marker.addListener('dragend', sd);
   marker.addListener('click', toggleBounce);
   function toggleBounce() {
     if (marker.getAnimation() !== null) {
