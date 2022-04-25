@@ -1,15 +1,41 @@
-
-
 function initMap(): void {
+  /** mes propo comme meeting point Based on Uber system + me */
+  var locations = [
+    ['Dépose Minute Departures - Terminal 2A', 49.0030499, 2.5619835, 'turquoise'],
+    ['Express Pickup 2B-2D / Parking Pro AB - Terminal 2B', 49.0036482, 2.5637822, 'turquoise', -10, 20],
+    ['depose Minute Terminal 3', 49.01340244496135, 2.559901938900744, 'turquoise', 23, -3],
+    ['depose Minute Terminal 1', 49.014256065890955, 2.540438489271546, 'turquoise', 23, -3],
+    ['Car Drop-Off Area (by Parking 1) - paris beauvais', 49.4603336, 2.1119917, 'turquoise', 23, -3],
+    ['RER Marne la Vallée - disneyLAnd', 48.870709, 2.783397, 'turquoise', 37, -3],
+    [' Orly Terminal 3 - Exit 18a - Parking Pro', 48.728634, 2.360249, 'turquoise', 37, -3],
+
+  
+   ];
+   
   const map = new google.maps.Map(
     document.getElementById('map') as HTMLElement,
     {
-      center: { lat: 40.749933, lng: -73.98633 },
-      zoom: 13,
+      center: { lat: 48.3408418,  lng:3.7367867, },
+      zoom: 7,
       mapTypeControl: false,
     }
   );
-
+  var makrker, i;
+    
+  for (i = 0; i < locations.length; i++) {  
+    makrker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map,
+        icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+      });
+      
+      google.maps.event.addListener(makrker, 'click', (function(makrker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, makrker);
+        }
+      })(makrker, i));}
+  
   const card = document.getElementById('pac-card') as HTMLElement;
   const input = document.getElementById('pac-input') as HTMLInputElement;
   const biasInputElement = document.getElementById(
@@ -27,7 +53,6 @@ function initMap(): void {
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(card);
 
   const autocomplete = new google.maps.places.Autocomplete(input, options);
-
 
   autocomplete.bindTo('bounds', map);
 

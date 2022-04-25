@@ -14,15 +14,15 @@
       <div>
         <div id="title">Ozeroute Location</div>
         <div id="type-selector" class="pac-controls">
-          <input
-            type="radio"
+          <!--<input
+            type="hidden"
             name="type"
             id="changetype-all"
             checked="checked"
           />
-          <label for="changetype-all">All</label>
+           <label for="changetype-all">All</label>
 
-          <!--<input type="radio" name="type" id="changetype-establishment" />
+          <input type="radio" name="type" id="changetype-establishment" />
           <label for="changetype-establishment">establishment</label>
 
           <input type="radio" name="type" id="changetype-address" />
@@ -40,23 +40,26 @@
         <br />
       </div>
       <div id="pac-container">
+      <label for="changetype-all">Enter a location</label>
+
         <input id="pac-input" type="text" placeholder="Enter a location" />
       </div>
-      <label for="changetype-all">Updated Position : </label> <br />
-      <label id="GFG"> address :</label><label id="adddress"> </label><br />
+      <label for="changetype-all">Updated Position : </label> <br /><br />
+      <label id="GFG"> address :</label><label id="adddress"> </label
+      ><br /><br />
 
-      <label id="GFG"> Latitude :</label><label id="Latitude"> </label>
+      <label id="GFG"> Latitude :</label><label id="Latitude"> </label><br />
       <br />
       <label id="GFG">longitude : </label>
-      <label id="longitude">longitude </label>
+      <label id="longitude"> </label><br />
     </div>
+    <br />
     <div id="map"></div>
     <div id="infowindow-content">
-      <span id="place-name" class="title"></span><br />
+      <span id="place-name" class="title"></span>
       <span id="place-address"></span>
     </div>
 
-   
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=places&v=weekly"
       defer
