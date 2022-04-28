@@ -1,41 +1,92 @@
+let infoWindow: google.maps.InfoWindow;
+
 function initMap(): void {
   /** mes propo comme meeting point Based on Uber system + me */
   var locations = [
-    ['Dépose Minute Departures - Terminal 2A', 49.0030499, 2.5619835, 'turquoise'],
-    ['Express Pickup 2B-2D / Parking Pro AB - Terminal 2B', 49.0036482, 2.5637822, 'turquoise', -10, 20],
-    ['depose Minute Terminal 3', 49.01340244496135, 2.559901938900744, 'turquoise', 23, -3],
-    ['depose Minute Terminal 1', 49.014256065890955, 2.540438489271546, 'turquoise', 23, -3],
-    ['Car Drop-Off Area (by Parking 1) - paris beauvais', 49.4603336, 2.1119917, 'turquoise', 23, -3],
-    ['RER Marne la Vallée - disneyLAnd', 48.870709, 2.783397, 'turquoise', 37, -3],
-    [' Orly Terminal 3 - Exit 18a - Parking Pro', 48.728634, 2.360249, 'turquoise', 37, -3],
+    [
+      'Dépose Minute Departures - Terminal 2A',
+      49.0030499,
+      2.5619835,
+      'turquoise',
+    ],
+    [
+      'Express Pickup 2B-2D / Parking Pro AB - Terminal 2B',
+      49.0036482,
+      2.5637822,
+      'turquoise',
+      -10,
+      20,
+    ],
+    [
+      'depose Minute Terminal 3',
+      49.01340244496135,
+      2.559901938900744,
+      'turquoise',
+      23,
+      -3,
+    ],
+    [
+      'depose Minute Terminal 1',
+      49.014256065890955,
+      2.540438489271546,
+      'turquoise',
+      23,
+      -3,
+    ],
+    [
+      'Car Drop-Off Area (by Parking 1) - paris beauvais',
+      49.4603336,
+      2.1119917,
+      'turquoise',
+      23,
+      -3,
+    ],
+    [
+      'RER Marne la Vallée - disneyLAnd',
+      48.870709,
+      2.783397,
+      'turquoise',
+      37,
+      -3,
+    ],
+    [
+      ' Orly Terminal 3 - Exit 18a - Parking Pro',
+      48.728634,
+      2.360249,
+      'turquoise',
+      37,
+      -3,
+    ],
+  ];
 
-  
-   ];
-   
   const map = new google.maps.Map(
     document.getElementById('map') as HTMLElement,
     {
-      center: { lat: 48.3408418,  lng:3.7367867, },
+      center: { lat: 48.3408418, lng: 3.7367867 },
       zoom: 7,
       mapTypeControl: false,
     }
   );
   var makrker, i;
-    
-  for (i = 0; i < locations.length; i++) {  
+  for (i = 0; i < locations.length; i++) {
     makrker = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-        map: map,
-        icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-      });
-      
-      google.maps.event.addListener(makrker, 'click', (function(makrker, i) {
-        return function() {
+      position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+      map: map,
+      icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+    });
+
+    google.maps.event.addListener(
+      makrker,
+      'click',
+      (function (makrker, i) {
+        return function () {
           infowindow.setContent(locations[i][0]);
           infowindow.open(map, makrker);
-        }
-      })(makrker, i));}
-  
+        };
+      })(makrker, i)
+    );
+  }
+
   const card = document.getElementById('pac-card') as HTMLElement;
   const input = document.getElementById('pac-input') as HTMLInputElement;
   const biasInputElement = document.getElementById(
@@ -62,7 +113,12 @@ function initMap(): void {
   ) as HTMLElement;
 
   infowindow.setContent(infowindowContent);
+  const markerLocation = new google.maps.Marker({
+    draggable: false,
 
+    map,
+    anchorPoint: new google.maps.Point(0, -29),
+  });
   const marker = new google.maps.Marker({
     draggable: true,
 
@@ -179,6 +235,7 @@ function initMap(): void {
     document.getElementById('Latitude').innerHTML = marker.position.lat();
     document.getElementById('longitude').innerHTML = marker.position.lng();
   }
+  getCurrentPosition(map, infoWindow);
 
   marker.addListener('dragend', sd);
   marker.addListener('click', toggleBounce);
@@ -192,7 +249,51 @@ function initMap(): void {
     }
   }
 }
+function getCurrentPosition(map, infoWindow) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        var NewLatLng = new google.maps.LatLng(
+          position.coords.latitude,
+          position.coords.longitude
+        );
+        const markerLocation = new google.maps.Marker({
+          draggable: false,
 
+          map,
+          anchorPoint: new google.maps.Point(0, -29),
+        });
+        markerLocation.setPosition(NewLatLng);
+        markerLocation.setVisible(true);
+        console.log(position.coords.accuracy);
+        console.log(position.coords.heading);
+
+        console.log('Location found.');
+        map.setCenter(pos);
+        setTimeout(getCurrentPosition(map, infoWindow), 10000);
+      },
+      function () {
+        handleLocationError(true, infoWindow, map.getCenter());
+        interval;
+      }
+    );
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+}
+
+function handleLocationError(
+  browserHasGeolocation: boolean,
+  infoWindow: google.maps.InfoWindow,
+  pos: google.maps.LatLng
+) {
+  print('error');
+}
 declare global {
   interface Window {
     initMap: () => void;
