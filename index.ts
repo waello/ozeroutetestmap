@@ -231,6 +231,7 @@ function initMap(): void {
       (employee) => (document.getElementById('adddress').innerHTML = employee)
     );
     infowindow.open(map, marker);
+    document.getElementById('address').innerHTML = marker.position.speed;
 
     document.getElementById('Latitude').innerHTML = marker.position.lat();
     document.getElementById('longitude').innerHTML = marker.position.lng();
