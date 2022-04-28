@@ -267,6 +267,7 @@ function getCurrentPosition(map, infoWindow) {
           map,
           anchorPoint: new google.maps.Point(0, -29),
         });
+        document.getElementById('adddress').innerHTML = position.coords.speed;
         document.getElementById('Latitude').innerHTML =
           position.coords.latitude;
         document.getElementById('longitude').innerHTML =
