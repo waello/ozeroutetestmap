@@ -267,6 +267,10 @@ function getCurrentPosition(map, infoWindow) {
           map,
           anchorPoint: new google.maps.Point(0, -29),
         });
+        document.getElementById('Latitude').innerHTML =
+          position.coords.latitude;
+        document.getElementById('longitude').innerHTML =
+          position.coords.longitude;
         markerLocation.setPosition(NewLatLng);
         markerLocation.setVisible(true);
         console.log(position.coords.accuracy);
